@@ -1,0 +1,195 @@
+# Databases-and-the-web-assignement-1
+
+<!DOCTYPE html>
+
+<html> <head>
+
+<title>Tic-Tac-Toe</title>
+<style type="text/css">
+body{
+    margin:0px;
+    padding:0px;
+}
+.game td
+{
+    width:100px;
+    height:100px;
+    border: solid 1px black;
+    text-align:center;
+    font-size:40pt;
+    box-sizing:border-box;
+}
+.game
+{
+    background:#efefef;
+    border:solid 1px #333;
+}
+.tictactoe-board
+{
+    text-align:center;
+    margin:0 auto;
+    padding-top:20px;
+}
+.board table
+{
+    float:left;
+}
+#end
+{
+	text-align:center;
+}
+</style>
+<script type="text/javascript">
+// first player is O and next will be X
+var player;
+var oCount;
+var xCount;
+var xSelections =[];
+var oSelections =[];
+var winningValues = [	
+						["0","1","2"],
+						["3","4","5"],
+						["6","7","8"],
+						["0","3","6"],
+						["1","4","7"],
+						["2","5","8"],
+						["0","4","8"],
+						["2","4","6"]
+					];
+
+
+function newBoard() 
+{
+document.getElementById("end").innerHTML = "Tic-Tac-Toe";
+player = "O";
+oCount = 0;
+xCount = 0;
+xSelections = new Array(5);
+oSelections = new Array(5);
+parent = document.getElementById("game");
+var cellNumber = 0;
+
+while (parent.hasChildNodes()) {
+        parent.removeChild(parent.firstChild);
+    }
+
+// create 3 x 3 board
+
+    for (var y = 0; y < 3; y++) {
+
+		var row = document.createElement('tr');
+
+		for (var x = 0; x < 3; x++) {
+			var col = document.createElement('td');
+			col.addEventListener('click', selectionMade);
+			col.id = cellNumber;
+			cellNumber ++;
+			row.appendChild(col);
+		}
+			parent.appendChild(row);
+    }
+}
+
+function switchPlayer()
+{
+	player == "X" ? player = "O": player = "X";
+}
+
+function selectionMade()
+{
+
+	if(player == "O"){
+		// puts text into the box that is clicked
+		// text is an O and is colour green
+		this.innerHTML = "<span style='color: green'>O</span>";
+		oSelections[oCount] = this.id;
+		oCount ++;
+		
+	}
+	else{
+		// uses exact same logic as above if statement 
+		// but changes text to a red X and switches player back to O
+		this.innerHTML ="<span style='color: red'>X</span>";
+		xSelections[xCount] = this.id;
+		xCount ++;
+	}
+	
+	// makes sure that even if someone tries to click the box again
+	// they are unable to change the value of it
+	this.removeEventListener("click", selectionMade);
+	
+	if (winner() == true && player == "O"){
+		document.getElementById("end").innerHTML = "Game Over, Player O wins";
+	}
+	else if (winner() == true && player == "X"){
+		document.getElementById("end").innerHTML = "Game Over, Player X wins";
+	}
+	else if (oCount + xCount == 9){
+		document.getElementById("end").innerHTML = "Game Over, No Winner.";
+	}
+	else {
+		switchPlayer();
+	}
+}
+function end()
+{
+	for (var y = 0; y < 9; y++){
+		document.getElementById(y).removeEventListener("click", selectionMade);
+    }
+}
+function winner()
+{
+	var checkLine = 0;
+	
+	//Check player x to see if valid line completed
+	while (checkLine < winningValues.length) {
+		if (player == 'X') {
+			// Are all winning spaces in x selections?		
+			if (xSelections.includes(winningValues[checkLine][0]) &&
+				xSelections.includes(winningValues[checkLine][1]) &&
+				xSelections.includes(winningValues[checkLine][2])) {
+					document.getElementById(winningValues[checkLine][0]).innerHTML = "<span style='color: yellow'>X</span>";
+					document.getElementById(winningValues[checkLine][1]).innerHTML = "<span style='color: yellow'>X</span>";
+					document.getElementById(winningValues[checkLine][2]).innerHTML = "<span style='color: yellow'>X</span>";
+					end()
+					return true;
+			}
+		}
+		// Check player o
+		else {
+			// Are all winning spaces in o selections?
+			if (oSelections.includes(winningValues[checkLine][0]) &&
+				oSelections.includes(winningValues[checkLine][1]) &&
+				oSelections.includes(winningValues[checkLine][2])) {
+					document.getElementById(winningValues[checkLine][0]).innerHTML = "<span style='color: yellow'>O</span>";
+					document.getElementById(winningValues[checkLine][1]).innerHTML = "<span style='color: yellow'>O</span>";
+					document.getElementById(winningValues[checkLine][2]).innerHTML = "<span style='color: yellow'>O</span>";
+					end()
+					return true;
+			}
+		}	
+		checkLine ++;
+	}
+	return false;
+}
+
+</script>
+</head>
+<body>
+
+<div class = "new">
+
+<input type ="button" value ="Reset" onClick ="newBoard();"/>
+
+</div>
+
+<div class = "game">
+
+<table id="game" class="tictactoe" style="float:left;" contenteditable="false"</table>
+
+</div>
+<div id = "end">
+<p> Tic-Tac-Toe</p>
+</div>
+
+</body> </html>
