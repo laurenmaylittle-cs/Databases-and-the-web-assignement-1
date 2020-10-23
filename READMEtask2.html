@@ -1,0 +1,77 @@
+# Databases-and-the-web-assignement-1
+
+<!DOCTYPE html>
+<html> <head>
+<title>Series of boxes...</title>
+
+<style type="text/css">
+body {
+  font-family:sans-serif;
+  font-weight:700;
+  font-size:15pt;
+} 
+#container div{
+  width: 2em;
+  height: 1.5em;
+  float: left;
+  padding: 1em;
+  margin: 5px;
+  padding-top:1.5em;
+  text-align: center;
+  transition: background 1s;
+  background: #a0aeef;
+}
+
+</style>
+
+<script type="text/javascript">
+function setup() {
+	var size = document.getElementById("size");
+	var container = document.getElementById("container");
+	
+	// Remove all existing boxes
+	while (container.children.length > 0) {
+	    container.removeChild(container.firstElementChild);
+	}
+
+	// Initial margin size
+	var lm = 5; 
+	// create number of boxes as per input 
+    for (i = 0; i < size.value; i++) {
+		// Create a numbered box, with random colour, with increasing left margin
+		var box = document.createElement("div");
+		box.innerHTML = i + 1;
+		box.style.marginLeft = lm + "px";
+		
+		// Set random background colour for next box
+		box.style.backgroundColor = randomBGColour();
+
+		// Add into the document
+		container.appendChild(box);
+		
+		// Double left margin for next box
+		lm = lm * 2;
+    }
+}
+
+function randomBGColour() {
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+	return "rgb(" + r + "," + g + "," + b + ")";
+}
+
+</script>
+</head>
+
+<body>
+
+<form id="config">
+Draw how many boxes?: <input name="size" id="size" type="text" />
+<input type="button" value="Go" onClick="setup();" />
+</form><br />
+
+<div id="container">
+</div>
+
+</body> </html>
