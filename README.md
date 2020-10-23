@@ -1,1 +1,0 @@
-# Databases-and-the-web-assignement-1
